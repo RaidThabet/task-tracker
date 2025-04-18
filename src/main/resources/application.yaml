@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: backend
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: changeme
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
