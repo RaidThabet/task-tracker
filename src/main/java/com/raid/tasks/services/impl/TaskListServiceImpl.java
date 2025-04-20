@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -17,6 +19,12 @@ public class TaskListServiceImpl implements TaskListService {
     @Override
     public List<TaskList> listTaskLists() {
         return taskListRepository.findAll();
+    }
+
+    @Override
+    public Optional<TaskList> getTaskList(UUID id) {
+
+        return taskListRepository.findById(id);
     }
 
     @Override
