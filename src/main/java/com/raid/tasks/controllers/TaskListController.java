@@ -4,9 +4,7 @@ import com.raid.tasks.domain.dto.TaskListDTO;
 import com.raid.tasks.mappers.TaskListMapper;
 import com.raid.tasks.services.TaskListService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +23,17 @@ public class TaskListController {
         return taskLists.stream()
                 .map(taskListMapper::toDto)
                 .toList();
+    }
+
+    @PostMapping
+    public TaskListDTO createTaskList(
+            @RequestBody TaskListDTO taskListDTO
+    ) {
+        var createdTaskList = taskListService.createTaskList(
+                taskListMapper.fromDto(taskListDTO)
+        );
+
+        return taskListMapper.toDto(createdTaskList);
     }
 
 }

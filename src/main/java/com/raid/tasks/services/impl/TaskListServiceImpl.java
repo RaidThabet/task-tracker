@@ -19,4 +19,24 @@ public class TaskListServiceImpl implements TaskListService {
         return taskListRepository.findAll();
     }
 
+    @Override
+    public TaskList createTaskList(TaskList taskList) {
+        if (taskList.getId() != null) {
+            throw new IllegalArgumentException("Task list already has an ID");
+        }
+        if (taskList.getTitle() == null || taskList.getTitle().isBlank()) {
+            throw new IllegalArgumentException("Task list title must be present");
+        }
+
+        var newTaskList = new TaskList(
+                null,
+                taskList.getTitle(),
+                taskList.getDescription(),
+                null,
+                null,
+                null
+        );
+
+        return taskListRepository.save(newTaskList);
+    }
 }
