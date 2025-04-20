@@ -6,10 +6,12 @@ import com.raid.tasks.domain.entities.TaskList;
 import com.raid.tasks.domain.entities.TaskStatus;
 import com.raid.tasks.mappers.TaskListMapper;
 import com.raid.tasks.mappers.TaskMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class TaskListMapperImpl implements TaskListMapper {
 
     private final TaskMapper taskMapper;
