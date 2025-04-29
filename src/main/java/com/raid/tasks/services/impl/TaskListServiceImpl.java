@@ -23,6 +23,11 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     @Override
+    public void deleteTaskList(UUID taskListId) {
+        taskListRepository.deleteById(taskListId);
+    }
+
+    @Override
     public TaskList updateTaskList(UUID taskListId, TaskList taskList) {
         if (null == taskList.getId()) {
             throw new IllegalArgumentException("Task list must have an ID");
