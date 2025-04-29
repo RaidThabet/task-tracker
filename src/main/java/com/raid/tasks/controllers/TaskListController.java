@@ -1,6 +1,7 @@
 package com.raid.tasks.controllers;
 
 import com.raid.tasks.domain.dto.TaskListDTO;
+import com.raid.tasks.domain.entities.TaskList;
 import com.raid.tasks.mappers.TaskListMapper;
 import com.raid.tasks.services.TaskListService;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,19 @@ public class TaskListController {
             @PathVariable("task-list-id") UUID id
     ) {
         return taskListService.getTaskList(id).map(taskListMapper::toDto);
+    }
+
+    @PutMapping("{task-list-id}")
+    public TaskListDTO updateTaskList(
+            @PathVariable("task-list-id") UUID taskListId,
+            @RequestBody TaskListDTO taskListDTO
+    ) {
+        TaskList updtedTaskList = taskListService.updateTaskList(
+                taskListId,
+                taskListMapper.fromDto(taskListDTO)
+        );
+
+        return taskListMapper.toDto(updtedTaskList);
     }
 
 }
