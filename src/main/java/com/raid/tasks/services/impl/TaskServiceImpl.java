@@ -22,6 +22,11 @@ public class TaskServiceImpl implements TaskService {
     private final TaskListRepository taskListRepository;
 
     @Override
+    public Optional<Task> getTask(UUID taskListId, UUID taskId) {
+        return taskRepository.findByTaskListIdAndId(taskListId, taskId);
+    }
+
+    @Override
     public Task createTask(UUID taskListId, Task task) {
         if (task.getId() != null) {
             throw new IllegalArgumentException("Task already has an ID"); // already exists

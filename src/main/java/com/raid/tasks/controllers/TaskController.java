@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -35,5 +36,13 @@ public class TaskController {
         Task createdTask = taskService.createTask(taskListId, taskMapper.fromDto(taskDTO));
 
         return taskMapper.toDto(createdTask);
+    }
+
+    @GetMapping("{task-id}")
+    public Optional<TaskDTO> getTask(
+            @PathVariable("task-list-id") UUID taskListId,
+            @PathVariable("task-id") UUID taskId
+    ) {
+        return taskService.getTask(taskListId, taskId).map(taskMapper::toDto);
     }
 }
