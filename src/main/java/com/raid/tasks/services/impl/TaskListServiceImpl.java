@@ -5,6 +5,7 @@ import com.raid.tasks.repositories.TaskListRepository;
 import com.raid.tasks.services.TaskListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ public class TaskListServiceImpl implements TaskListService {
         taskListRepository.deleteById(taskListId);
     }
 
+    @Transactional
     @Override
     public TaskList updateTaskList(UUID taskListId, TaskList taskList) {
         if (null == taskList.getId()) {
