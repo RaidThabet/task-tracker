@@ -1,13 +1,11 @@
 package com.raid.tasks.controllers;
 
 import com.raid.tasks.domain.dto.TaskDTO;
+import com.raid.tasks.domain.entities.Task;
 import com.raid.tasks.mappers.TaskMapper;
 import com.raid.tasks.services.TaskService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,5 +25,15 @@ public class TaskController {
         return taskService.listTasks(taskListId).stream()
                 .map(taskMapper::toDto)
                 .toList();
+    }
+
+    @PostMapping("")
+    public TaskDTO createTask(
+            @PathVariable("task-list-id") UUID taskListId,
+            @RequestBody TaskDTO taskDTO
+    ) {
+        Task createdTask = taskService.createTask(taskListId, taskMapper.fromDto(taskDTO));
+
+        return taskMapper.toDto(createdTask);
     }
 }
