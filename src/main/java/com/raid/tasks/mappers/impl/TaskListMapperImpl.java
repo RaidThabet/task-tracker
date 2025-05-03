@@ -26,6 +26,8 @@ public class TaskListMapperImpl implements TaskListMapper {
                 taskListDTO.id(),
                 taskListDTO.title(),
                 taskListDTO.description(),
+                // TODO: to be changed
+                null,
                 Optional.ofNullable(taskListDTO.tasks())
                         .map(tasks -> tasks.stream()
                                 .map(taskMapper::fromDto)

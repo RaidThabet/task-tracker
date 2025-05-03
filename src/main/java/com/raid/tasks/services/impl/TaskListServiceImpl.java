@@ -67,6 +67,8 @@ public class TaskListServiceImpl implements TaskListService {
                 null,
                 taskList.getTitle(),
                 taskList.getDescription(),
+                // TODO: to be changed
+                null,
                 null,
                 null,
                 null

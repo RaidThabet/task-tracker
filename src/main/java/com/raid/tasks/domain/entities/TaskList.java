@@ -32,6 +32,10 @@ public class TaskList {
     @Column(name = "description")
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "taskList", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     private List<Task> tasks;
 
