@@ -1,4 +1,4 @@
-package com.raid.tasks.security.service;
+package com.raid.tasks.security.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
