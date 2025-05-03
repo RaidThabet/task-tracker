@@ -20,7 +20,7 @@ public class JwtService {
 
 
     @Value("${application.security.jwt.secret-key}")
-    private static String secretKey;
+    private String secretKey;
 
     public String extractUserEmail(String jwt) {
         return extractClaim(jwt, Claims::getSubject);
