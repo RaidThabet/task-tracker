@@ -39,7 +39,7 @@ public class User implements UserDetails {
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRole role = UserRole.ROLE_USER;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<TaskList> taskLists;
