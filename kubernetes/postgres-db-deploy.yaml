@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-db-deploy
+  labels:
+    name: postgres-db-deploy
+    app: tasks-tracker-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: postgres-db-pod
+      app: tasks-tracker-app
+  template:
+    metadata:
+      name: postgres-db-pod
+      labels:
+        name: postgres-db-pod
+        app: tasks-tracker-app
+    spec:
+      containers:
+        - name: postgres-db
+          image: postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "changeme"

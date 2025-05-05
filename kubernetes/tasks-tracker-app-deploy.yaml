@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-spring-deploy
+  labels:
+    name: backend-spring-deploy
+    app: tasks-tracker-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: backend-spring-pod
+      app: tasks-tracker-app
+  template:
+    metadata:
+      name: result-app-pod
+      labels:
+        name: backend-spring-pod
+        app: tasks-tracker-app
+    spec:
+      containers:
+        - name: backend-spring
+          image: tasks-tracker
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: changeme
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres-db-service:5432/postgres
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: changeme
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
