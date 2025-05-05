@@ -1,0 +1,31 @@
+name: task-tracker
+services:
+  task-tracker-db:
+    container_name: task-tracker-db
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: changeme
+    volumes:
+      - task-tracker-db-data:/var/lib/postgresql/data
+
+  backend:
+    container_name: task-tracker-spring
+    depends_on:
+      - task-tracker-db
+    image: tasks-tracker
+    ports:
+      - "8080:8080"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=changeme
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://task-tracker-db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=changeme
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+volumes:
+  task-tracker-db-data:
+    driver: local
