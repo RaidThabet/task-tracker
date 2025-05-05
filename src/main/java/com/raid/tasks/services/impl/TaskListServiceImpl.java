@@ -1,6 +1,7 @@
 package com.raid.tasks.services.impl;
 
 import com.raid.tasks.domain.entities.TaskList;
+import com.raid.tasks.domain.entities.User;
 import com.raid.tasks.repositories.TaskListRepository;
 import com.raid.tasks.services.TaskListService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,12 @@ public class TaskListServiceImpl implements TaskListService {
     private final TaskListRepository taskListRepository;
 
     @Override
-    public List<TaskList> listTaskLists() {
-        return taskListRepository.findAll();
+    public List<TaskList> listTaskLists(UUID id) {
+        // id == null means that the user role is ADMIN
+        if (id == null) {
+            return taskListRepository.findAll();
+        }
+        return taskListRepository.findByUserId(id);
     }
 
     @Override
@@ -55,7 +60,7 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     @Override
-    public TaskList createTaskList(TaskList taskList) {
+    public TaskList createTaskList(TaskList taskList, User user) {
         if (taskList.getId() != null) {
             throw new IllegalArgumentException("Task list already has an ID");
         }
@@ -67,8 +72,7 @@ public class TaskListServiceImpl implements TaskListService {
                 null,
                 taskList.getTitle(),
                 taskList.getDescription(),
-                // TODO: to be changed
-                null,
+                user,
                 null,
                 null,
                 null
