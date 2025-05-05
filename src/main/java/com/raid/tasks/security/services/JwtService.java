@@ -1,5 +1,6 @@
 package com.raid.tasks.security.services;
 
+import com.raid.tasks.domain.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,6 +40,9 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ) {
+        User user = (User) userDetails;
+        extraClaims.put("role", user.getRole().name());
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

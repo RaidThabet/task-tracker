@@ -2,9 +2,15 @@ package com.raid.tasks.controllers;
 
 import com.raid.tasks.domain.dto.TaskListDTO;
 import com.raid.tasks.domain.entities.TaskList;
+import com.raid.tasks.domain.entities.User;
+import com.raid.tasks.domain.entities.UserRole;
 import com.raid.tasks.mappers.TaskListMapper;
 import com.raid.tasks.services.TaskListService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,20 +26,30 @@ public class TaskListController {
     private final TaskListMapper taskListMapper;
 
     @GetMapping
-    public List<TaskListDTO> listTaskLists() {
-        var taskLists = taskListService.listTaskLists();
+    public ResponseEntity<?> listTaskLists() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        var userRole = user.getRole();
+        var userId = userRole == UserRole.ROLE_USER ? user.getId() : null;
+        var taskLists = taskListService.listTaskLists(userId);
 
-        return taskLists.stream()
+        var list = taskLists.stream()
                 .map(taskListMapper::toDto)
                 .toList();
+
+        return ResponseEntity.ok(list);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_USER') and !hasAuthority('ROLE_ADMIN')")
     @PostMapping
     public TaskListDTO createTaskList(
             @RequestBody TaskListDTO taskListDTO
     ) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
         var createdTaskList = taskListService.createTaskList(
-                taskListMapper.fromDto(taskListDTO)
+                taskListMapper.fromDto(taskListDTO),
+                user
         );
 
         return taskListMapper.toDto(createdTaskList);
