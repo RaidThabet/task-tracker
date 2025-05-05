@@ -10,10 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,7 +38,7 @@ public class TaskListController {
         return ResponseEntity.ok(list);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_USER') and !hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping
     public TaskListDTO createTaskList(
             @RequestBody TaskListDTO taskListDTO
@@ -62,6 +60,7 @@ public class TaskListController {
         return taskListService.getTaskList(id).map(taskListMapper::toDto);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("{task-list-id}")
     public TaskListDTO updateTaskList(
             @PathVariable("task-list-id") UUID taskListId,
@@ -75,6 +74,7 @@ public class TaskListController {
         return taskListMapper.toDto(updtedTaskList);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("{task-list-id}")
     public void deleteTaskList(
             @PathVariable("task-list-id") UUID id
